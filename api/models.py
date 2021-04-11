@@ -39,7 +39,7 @@ class Component(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
 
-class Comment(Component):
+class Style(Component):
     who_can_see = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='who_can_see_style', blank=True)
     who_can_edite = models.ManyToManyField(
@@ -52,10 +52,18 @@ class Post(Component):
         settings.AUTH_USER_MODEL, related_name='who_can_see_post', blank=True)
     who_can_edite = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='who_can_edite_post', blank=True)
-    preBuildStyle = models.ManyToManyField(
-        Comment, related_name='styles', blank=True)
+    pre_build_style = models.ManyToManyField(
+        Style, related_name='styles', blank=True)
     styles = models.CharField(max_length=9999999, blank=True)
     # type = ['Paper','post','template','comstume_component']
     postType = models.CharField(max_length=50, blank=True)
-    comment = models.ManyToManyField(
-        Comment, related_name='comment', blank=True)
+
+
+class Comment(Component):
+    who_can_see = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='who_can_see_comment', blank=True)
+    who_can_edite = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='who_can_edite_comment', blank=True)
+    the_post = models.ForeignKey(
+        Post, related_name='comment', on_delete=models.DO_NOTHING, null=True,)
+    pass
