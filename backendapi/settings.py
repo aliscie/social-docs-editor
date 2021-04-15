@@ -13,7 +13,7 @@ SECRET_KEY = 'o!+k-zoxz%&_k&dr_%r!)l4m2_b=gmh=qs=nx6amb)^tg82i_!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['autodox-backend.herokuapp.com','*']
+ALLOWED_HOSTS = ['autodox-backend.herokuapp.com', '*']
 
 
 # Application definition
@@ -35,11 +35,15 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
 ]
 
 ROOT_URLCONF = 'backendapi.urls'
@@ -143,3 +147,20 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
     'api.pipline.save_profile'
 )
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3001',
+#     'http://localhost:3000',
+#     "http://127.0.0.1:8000",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
