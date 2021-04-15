@@ -7,5 +7,5 @@ from graphene_django.views import GraphQLView
 from .views import schema
 
 urlpatterns = [
-      path("", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
+    path("", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
 ]

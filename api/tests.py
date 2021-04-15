@@ -7,20 +7,22 @@ from graphene_django.utils.testing import GraphQLTestCase
 
 class MyFancyTestCase(GraphQLTestCase):
     def test_query_posts(self):
-          True
-      #   response = self.query(
-      #       '''
-      #       query{
-      #       posts {
-      #       description
-      #       id
-      #       addedBy{
-      #           username
-      #           id
-      #           }
-      #       }
-      #       }
-      #       ''',
-      #   )
-      #   content = json.loads(response.content)
-      #   self.assertResponseNoErrors(response)
+        response = self.query(
+            '''
+            query{
+            posts {
+            id
+            description
+            comment {
+            id
+            description
+            }
+            styles
+            }
+            }
+            '''
+        )
+
+        # content = json.loads(response.content)
+        # print({"________XXXXX": content})
+        # self.assertResponseNoErrors(response)
