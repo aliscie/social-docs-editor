@@ -6,7 +6,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('graphql/', include('api.urls')),
+    path('', include('api.urls')),
 ]
 
 # for relative paths of static files
