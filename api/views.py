@@ -66,6 +66,27 @@ class UpdatePost(graphene.Mutation):
                 "Only the owner of the post and the admin(website's owner) can edit and delete this post")
 
 
+class UpdateUser(graphene.Mutation):
+    # owner(added_by)+admin can update and delete
+    class Arguments:
+        username = graphene.String(required=True)
+        first_name = graphene.String(required=False)
+        last_name = graphene.String(required=False)
+    user = graphene.Field(schema.Users)
+
+    @classmethod
+    def mutate(cls, root, info, username, *args, **kwargs):
+        user = models.ExtendUser.objects.get(username=username)
+        if ((info.context.user.id == 1) or (info.context.user == user)):
+            for key in kwargs.keys():
+                setattr(user, key, kwargs[key])
+            user.save()
+            return UpdateUser(user=user)
+        else:
+            raise GraphQLError(
+                "Only "+user.username + " and the admin(website's owner) can edit and delete this profile")
+
+
 class DeletePost(graphene.Mutation):
     # owner(added_by)+admin can update and delete
     class Arguments:
@@ -134,6 +155,7 @@ class Mutation(graphene.ObjectType):
     create_post = CreatePost.Field()
     # create_style = UpdatePost.Field()
     update_post = UpdatePost.Field()
+    update_user = UpdateUser.Field()
     # update_stule =
     delete_post = DeletePost.Field()
     # delete_style =
