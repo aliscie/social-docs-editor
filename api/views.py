@@ -70,8 +70,18 @@ class UpdateUser(graphene.Mutation):
     # owner(added_by)+admin can update and delete
     class Arguments:
         username = graphene.String(required=True)
+        username = graphene.String(required=False)
         first_name = graphene.String(required=False)
         last_name = graphene.String(required=False)
+        is_active = graphene.String(required=False)
+        # is_staff = graphene.String(required=False)
+        # is_superuser = graphene.String(required=False)
+        receive_newsletter = graphene.String(required=False)
+        birth_date = graphene.String(required=False)
+        address = graphene.String(required=False)
+        city = graphene.String(required=False)
+        about_me = graphene.String(required=False)
+
     user = graphene.Field(schema.Users)
 
     @classmethod
