@@ -105,8 +105,9 @@ class DeletePost(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, id):
-        post_owner = info.context.user
+
         get_post = models.Post.objects.get(id=id)
+        post_owner = get_post.added_by
         post = models.Post.objects.get(id=id)
         if (info.context.user == post.added_by or post_owner.id == 1):
             post.delete()
