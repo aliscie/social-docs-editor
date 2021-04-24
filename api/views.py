@@ -117,6 +117,26 @@ class DeletePost(graphene.Mutation):
                 "Only the owner of the post ("+post_owner.username+") and the admin(website's owner) can edit or delete this post")
 
 
+class LikeDislike(graphene.Mutation):
+    # owner(added_by)+admin can update and delete
+    class Arguments:
+        id = graphene.Int(required=True)
+        action = graphene.String(required=True)
+    post = graphene.Field(schema.Posts)
+
+    @classmethod
+    def mutate(cls, root, info, id, action):
+        post = models.Post.objects.get(id=id)
+        if (info.context.user in getattr(post, action).all()):
+            getattr(post, action).remove(info.context.user)
+        else:
+            post.like.remove(info.context.user)
+            post.dislike.remove(info.context.user)
+            getattr(post, action).add(info.context.user)
+        post.save()
+        return LikeDislike(post=post)
+
+
 class Query(graphene.ObjectType):
 
     posts_type = graphene.List(schema.Posts, postType=graphene.String())
@@ -170,6 +190,7 @@ class Mutation(graphene.ObjectType):
     # update_stule =
     delete_post = DeletePost.Field()
     # delete_style =
+    like_dislike = LikeDislike.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

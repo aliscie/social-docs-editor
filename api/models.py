@@ -48,6 +48,10 @@ class Style(Component):
 
 
 class Post(Component):
+    like = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='like_post', blank=True)
+    dislike = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='dislike_post', blank=True)
     who_can_see = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='who_can_see_post', blank=True)
     who_can_edite = models.ManyToManyField(
