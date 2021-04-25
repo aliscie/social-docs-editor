@@ -28,10 +28,12 @@ class Create(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, description, *args, **kwargs):
-        post = models.Post(description=description, added_by=info.context.user)
-        post.save(*args, **kwargs)
-        return CreatePost(post=post)
-        if (not info.context.user):
+        if(info.context.user.id):
+            post = models.Post(description=description,
+                               added_by=info.context.user)
+            post.save(*args, **kwargs)
+            return CreatePost(post=post)
+        else:
             raise GraphQLError(
                 "you must login to be able to create a post")
 
@@ -54,7 +56,6 @@ class UpdatePost(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, id, description):
-        print({"______ USER _______ update posts": info.context.user})
 
         post = models.Post.objects.get(id=id)
         if ((info.context.user == post.added_by) or (info.context.user.id == 1) or (info.context.user in post.who_can_edite.all())):
